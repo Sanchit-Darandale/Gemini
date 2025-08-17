@@ -35,7 +35,8 @@ async def ai_endpoint(request: Request):
 
         return JSONResponse({
             "user": user_text,
-            "response": reply
+            "response": reply,
+            "\nMade With ♥️ by Sanchit"
         })
 
     except Exception as e:
