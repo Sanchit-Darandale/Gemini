@@ -32,9 +32,9 @@ async def home():
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
-                text-align: center;
-                background: linear-gradient(135deg, #d4fcd4, #a8e6a2);
+                background: #ffffff;
                 color: #2d572c;
+                text-align: center;
             }
             header {
                 background: #2d572c;
@@ -48,38 +48,42 @@ async def home():
                 margin: auto;
             }
             input[type="text"] {
-                width: 90%;
-                padding: 10px;
+                width: 100%;
+                padding: 12px;
                 margin: 10px 0;
-                border: 2px solid #2d572c;
+                border: 1px solid #ccc;
                 border-radius: 8px;
                 font-size: 1em;
+                box-sizing: border-box;
             }
             button {
-                background: #2d572c;
+                background: #4CAF50;
                 color: white;
-                padding: 10px 20px;
+                padding: 12px 20px;
                 border: none;
                 border-radius: 8px;
                 font-size: 1em;
                 cursor: pointer;
+                width: 100%;
             }
             button:hover {
-                background: #1e3d1f;
+                background: #45a049;
             }
             #response-box {
                 margin-top: 20px;
                 padding: 15px;
-                background: #ffffffaa;
+                background: #f9f9f9;
+                border: 1px solid #ddd;
                 border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
                 font-size: 1em;
                 text-align: left;
+                min-height: 50px;
             }
             footer {
-                margin-top: 30px;
+                margin-top: 40px;
                 font-size: 0.9em;
-                color: #333;
+                color: #555;
             }
         </style>
     </head>
@@ -88,7 +92,6 @@ async def home():
         <div class="container">
             <p>Ask me anything about farming:</p>
             <input type="text" id="userInput" placeholder="Type your question here..." />
-            <br>
             <button onclick="askAI()">Ask</button>
             <div id="response-box"></div>
         </div>
