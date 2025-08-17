@@ -117,11 +117,11 @@ async def home():
                 <h3>📖 API Usage</h3>
                 <p>You can also access this AI via API:</p>
                 <p><b>1️⃣ GET request:</b></p>
-                <code>https://your-domain.vercel.app/ai?text=Best fertilizer for wheat</code>
+                <code>https://ds-gemini-ai.vercel.app/ai?text=Best+fertilizer+for+wheat</code>
                 
                 <p><b>2️⃣ POST request:</b></p>
                 <code>
-                curl -X POST https://your-domain.vercel.app/ai \<br>
+                curl -X POST https://ds-gemini-ai.vercel.app/ai \<br>
                 -H "Content-Type: application/json" \<br>
                 -d '{"text": "How to prevent pests in tomatoes?"}'
                 </code>
@@ -136,7 +136,7 @@ async def home():
             </div>
         </div>
         <footer>
-            <p>Made With ♥️ by <b>Sanchit</b></p>
+            <p>Made With ♥️ by Sanchit</p>
         </footer>
 
         <script>
