@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 import google.generativeai as genai
 import os
 
@@ -19,6 +19,26 @@ def get_response(user_text: str) -> str:
     response = chat.send_message(user_text)
     return response.text
 
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return """
+    <html>
+        <head>
+            <title>Agriculture AI API</title>
+        </head>
+        <body style="font-family: Arial; text-align: center; margin-top: 50px;">
+            <h1>🌱 Agriculture AI API</h1>
+            <p>Welcome! This is a private API powered by Gemini.</p>
+            <p>Try it here:</p>
+            <ul style="list-style: none;">
+                <li><b>GET</b>: /ai?text=Best fertilizer for wheat</li>
+                <li><b>POST</b>: /ai with JSON body {"text": "your question"}</li>
+            </ul>
+            <p><i>Made by Sanchit 🚀</i></p>
+        </body>
+    </html>
+    """
+    
 @app.api_route("/ai", methods=["GET", "POST"])
 async def ai_endpoint(request: Request):
     try:
@@ -41,3 +61,4 @@ async def ai_endpoint(request: Request):
 
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
+
