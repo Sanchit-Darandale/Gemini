@@ -44,7 +44,7 @@ async def home():
             }
             .container {
                 padding: 20px;
-                max-width: 500px;
+                max-width: 600px;
                 margin: auto;
             }
             input[type="text"] {
@@ -80,10 +80,28 @@ async def home():
                 text-align: left;
                 min-height: 50px;
             }
+            .api-info {
+                margin-top: 30px;
+                text-align: left;
+                background: #f1f8f1;
+                border: 1px solid #d4e8d4;
+                padding: 15px;
+                border-radius: 10px;
+                font-size: 0.95em;
+                color: #333;
+            }
+            .api-info code {
+                background: #eee;
+                padding: 2px 5px;
+                border-radius: 5px;
+                font-family: monospace;
+            }
             footer {
                 margin-top: 40px;
                 font-size: 0.9em;
                 color: #555;
+                padding: 15px;
+                background: #f9f9f9;
             }
         </style>
     </head>
@@ -94,9 +112,31 @@ async def home():
             <input type="text" id="userInput" placeholder="Type your question here..." />
             <button onclick="askAI()">Ask</button>
             <div id="response-box"></div>
+
+            <div class="api-info">
+                <h3>📖 API Usage</h3>
+                <p>You can also access this AI via API:</p>
+                <p><b>1️⃣ GET request:</b></p>
+                <code>https://your-domain.vercel.app/ai?text=Best fertilizer for wheat</code>
+                
+                <p><b>2️⃣ POST request:</b></p>
+                <code>
+                curl -X POST https://your-domain.vercel.app/ai \<br>
+                -H "Content-Type: application/json" \<br>
+                -d '{"text": "How to prevent pests in tomatoes?"}'
+                </code>
+                
+                <p>✅ Response Example:</p>
+                <code>
+                {
+                  "user": "How to prevent pests in tomatoes?",
+                  "response": "Use neem oil spray, remove infected leaves, and keep soil clean."
+                }
+                </code>
+            </div>
         </div>
         <footer>
-            <p>Made by <b>Sanchit 🚀</b></p>
+            <p>Made With ♥️ by <b>Sanchit</b></p>
         </footer>
 
         <script>
