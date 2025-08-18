@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse
 import google.generativeai as genai
 import os
@@ -11,6 +12,15 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 SYSTEM_PROMPT = "You are a helpful agriculture expert who answers in short, clear sentences. your owner/ developer is Sanchit"
 
 app = FastAPI()
+
+# Allow CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_response(user_text: str) -> str:
     chat = model.start_chat(history=[
