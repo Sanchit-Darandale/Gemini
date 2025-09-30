@@ -8,7 +8,7 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 
 genai.configure(api_key=API_KEY)
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-1.5-flash-latest")
 SYSTEM_PROMPT = '''
 You are CareConnects AI Assistant, made by Sanchit, a friendly and reliable health guide for community.
 Your role is to provide general healthcare awareness, preventive health tips, lifestyle guidance, and wellness information in simple, short and easy-to-understand language.
