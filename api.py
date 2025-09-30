@@ -4,42 +4,22 @@ from fastapi.responses import JSONResponse, HTMLResponse
 import google.generativeai as genai
 import os
 
+# Load API key from environment variable
 API_KEY = os.getenv("GEMINI_API_KEY")
-
 genai.configure(api_key=API_KEY)
 
+# Use correct model
 model = genai.GenerativeModel("gemini-1.5-flash-latest")
-SYSTEM_PROMPT = '''
+
+# System prompt
+SYSTEM_PROMPT = """
 You are CareConnects AI Assistant, made by Sanchit, a friendly and reliable health guide for community.
 Your role is to provide general healthcare awareness, preventive health tips, lifestyle guidance, and wellness information in simple, short and easy-to-understand language.
 Share only verified and general health information (e.g., hygiene, nutrition, exercise, preventive care).
 Encourage healthy habits and spread awareness about government/WHO initiatives.
 Explain in a clear, simple, short and community-friendly way (avoid medical jargon).
-you can also tell ayurvedic treatment or natural treatment 
+You can also tell ayurvedic treatment or natural treatment.
 Stay polite, supportive, and motivational in tone.
-'''
-
-"""
-You are "AgriSage AI", a multilingual agricultural assistant developed by Sanchit.  
-Your role is to help farmers and users by providing answers in short, clear sentences, accurate, simple, and practical information related to farming, crops, weather, soil, irrigation, government schemes, and market prices.  
-
-Guidelines for responses:
-- Always reply in the same language the user uses (Marathi, Hindi, English, Gujarati, etc.).  
-- Use clear, simple, and farmer-friendly sentences.  
-- If the user asks about weather, fetch the latest weather information for their location and present it clearly.  
-- If the user asks about crop market prices, search for the latest mandi/market rates and share them.  
-- Provide step-by-step guidance for farming practices (e.g., pest control, crop rotation, fertilizer use, soil health).  
-- Suggest eco-friendly, cost-effective, and practical solutions.  
-- If asked about government schemes, give details on eligibility, process, and benefits in the user's language.  
-- Always stay polite, supportive, and encouraging.  
-
-Important:  
-- If a user asks in Marathi → reply in Marathi.  
-- If a user asks in Hindi → reply in Hindi.  
-- If a user asks in Gujarati → reply in Gujarati.  
-- Otherwise, reply in English.  
-
-You are designed to be a trusted digital companion for farmers, making agriculture easier, profitable, and sustainable.
 """
 
 app = FastAPI()
@@ -47,18 +27,17 @@ app = FastAPI()
 # Allow CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Response generator
 def get_response(user_text: str) -> str:
-    chat = model.start_chat(history=[
-        {"role": "user", "parts": [SYSTEM_PROMPT]}
-    ])
-    response = chat.send_message(user_text)
+    response = model.generate_content(f"{SYSTEM_PROMPT}\n\nUser: {user_text}")
     return response.text
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -69,81 +48,16 @@ async def home():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Agriculture AI API</title>
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background: #ffffff;
-                color: #2d572c;
-                text-align: center;
-            }
-            header {
-                background: #2d572c;
-                color: white;
-                padding: 15px;
-                font-size: 1.5em;
-            }
-            .container {
-                padding: 20px;
-                max-width: 600px;
-                margin: auto;
-            }
-            input[type="text"] {
-                width: 100%;
-                padding: 12px;
-                margin: 10px 0;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 1em;
-                box-sizing: border-box;
-            }
-            button {
-                background: #4CAF50;
-                color: white;
-                padding: 12px 20px;
-                border: none;
-                border-radius: 8px;
-                font-size: 1em;
-                cursor: pointer;
-                width: 100%;
-            }
-            button:hover {
-                background: #45a049;
-            }
-            #response-box {
-                margin-top: 20px;
-                padding: 15px;
-                background: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-                font-size: 1em;
-                text-align: left;
-                min-height: 50px;
-            }
-            .api-info {
-                margin-top: 30px;
-                text-align: left;
-                background: #f1f8f1;
-                border: 1px solid #d4e8d4;
-                padding: 15px;
-                border-radius: 10px;
-                font-size: 0.95em;
-                color: #333;
-            }
-            .api-info code {
-                background: #eee;
-                padding: 2px 5px;
-                border-radius: 5px;
-                font-family: monospace;
-            }
-            footer {
-                margin-top: 40px;
-                font-size: 0.9em;
-                color: #555;
-                padding: 15px;
-                background: #f9f9f9;
-            }
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #ffffff; color: #2d572c; text-align: center; }
+            header { background: #2d572c; color: white; padding: 15px; font-size: 1.5em; }
+            .container { padding: 20px; max-width: 600px; margin: auto; }
+            input[type="text"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; box-sizing: border-box; }
+            button { background: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; width: 100%; }
+            button:hover { background: #45a049; }
+            #response-box { margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 1em; text-align: left; min-height: 50px; }
+            .api-info { margin-top: 30px; text-align: left; background: #f1f8f1; border: 1px solid #d4e8d4; padding: 15px; border-radius: 10px; font-size: 0.95em; color: #333; }
+            .api-info code { background: #eee; padding: 2px 5px; border-radius: 5px; font-family: monospace; }
+            footer { margin-top: 40px; font-size: 0.9em; color: #555; padding: 15px; background: #f9f9f9; }
         </style>
     </head>
     <body>
@@ -209,7 +123,8 @@ async def home():
     </body>
     </html>
     """
-    
+
+
 @app.api_route("/ai", methods=["GET", "POST"])
 async def ai_endpoint(request: Request):
     try:
@@ -232,4 +147,3 @@ async def ai_endpoint(request: Request):
 
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
-
